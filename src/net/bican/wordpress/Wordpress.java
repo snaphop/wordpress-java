@@ -78,18 +78,14 @@ public class Wordpress {
     return result;
   }
 
-  private String password = null;
   private PingbackBridge pingback = null;
   private PingbackExtensionsBridge pingbackExt = null;
-  private String username = null;
+  private final String username;
+  private final String password;
+  private final String xmlRpcUrl;
 
   private WordpressBridge wp = null;
 
-  private String xmlRpcUrl = null;
-
-  private Wordpress() {
-    // no default constructor - class needs username, password and url
-  }
 
   /**
    * @param username User name
@@ -616,7 +612,7 @@ public class Wordpress {
     for (final Object rec : r) {
       try {
         result.add(new URL((String) rec));
-      } catch (@SuppressWarnings("unused") final MalformedURLException e) {
+      } catch (final MalformedURLException e) {
         logger.error("malformed url for pingback: {}", //$NON-NLS-1$
             rec);
       }
@@ -907,7 +903,7 @@ public class Wordpress {
     try {
       final XmlRpcStruct r =
           this.wp.getTerm(BLOGID, this.username, this.password, taxonomy, termId);
-      final Term t = Term.builder().build();
+      final Term t = new Term();
       t.fromXmlRpcStruct(r);
       return t;
     } catch (final XmlRpcFault e) {
@@ -954,7 +950,7 @@ public class Wordpress {
           ? this.wp.getTerms(BLOGID, this.username, this.password, taxonomy,
               filter.toXmlRpcStruct())
           : this.wp.getTerms(BLOGID, this.username, this.password, taxonomy);
-      return fillFromXmlRpcArray(r, Term.class, Term.builder().build());
+      return fillFromXmlRpcArray(r, Term.class, new Term());
     } catch (final XmlRpcFault e) {
       final int err = e.getErrorCode();
       switch (err) {

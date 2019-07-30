@@ -4,7 +4,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>net.bican</groupId>
+    <groupId>com.snaphop.jwordpress</groupId>
     <artifactId>jwordpress</artifactId>
     <version>0.7.0</version>
     <name>wordpress-java</name>
@@ -20,13 +20,16 @@
             </roles>
             <timezone>EET</timezone>
         </developer>
+        <developer>
+            <id>agentgt</id>
+            <name>Adam Gent</name>
+            <email>oss@adamgent.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>ETD</timezone>
+        </developer>
     </developers>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>synergian-repo</id>
-            <url>https://raw.github.com/synergian/wagon-git/releases</url>
-        </pluginRepository>
-    </pluginRepositories>
     <licenses>
         <license>
             <name>MIT License</name>
@@ -56,6 +59,7 @@
         </plugins>
     </reporting>
     <build>
+      <!--
         <extensions>
             <extension>
                 <groupId>ar.com.synergian</groupId>
@@ -63,6 +67,7 @@
                 <version>0.2.5</version>
             </extension>
         </extensions>
+       -->
         <!-- <pluginManagement> <plugins> <plugin> <groupId>org.apache.maven.plugins</groupId> 
             <artifactId>maven-site-plugin</artifactId> <version>3.3</version> </plugin> 
             </plugins> </pluginManagement> -->
@@ -106,6 +111,7 @@
                     </execution>
                 </executions>
             </plugin>
+            <!--  
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
@@ -117,6 +123,7 @@
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
+            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
@@ -127,75 +134,6 @@
                         <phase>verify</phase>
                         <goals>
                             <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.google.code.maven-replacer-plugin</groupId>
-                <artifactId>replacer</artifactId>
-                <version>1.5.0</version>
-                <executions>
-                    <execution>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>replace</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <file>jwordpress</file>
-                    <outputFile>${project.build.directory}/jwordpress</outputFile>
-                    <replacements>
-                        <replacement>
-                            <token>@VERSION@</token>
-                            <value>${project.version}</value>
-                        </replacement>
-                        <replacement>
-                            <token>@PACKAGE@</token>
-                            <value>${project.artifactId}</value>
-                        </replacement>
-                    </replacements>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>1.7.1</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
-                            <shadedClassifierName>cli</shadedClassifierName>
-                            <transformers>
-                                <transformer
-                                    implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>net.bican.wordpress.Main</mainClass>
-                                </transformer>
-                            </transformers>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.3</version>
-                <configuration>
-                    <filter>assemble/filter.properties</filter>
-                    <descriptors>
-                        <descriptor>assemble/distribution.xml</descriptor>
-                        <!-- <descriptor>assemble/source.xml</descriptor> -->
-                    </descriptors>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -245,18 +183,11 @@
         </repository>
     </repositories>
     <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
         <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        <id>bintray-snaphop-maven</id>
+        <name>snaphop-maven</name>
+        <url>https://api.bintray.com/maven/snaphop/maven/wordpress-java/;publish=1</url>
         </repository>
-        <site>
-            <id>git-wordpressjava</id>
-            <url>git:gh-pages://git@github.com:canbican/wordpress-java.git</url>
-        </site>
     </distributionManagement>
     <dependencies>
         <dependency>
@@ -275,32 +206,7 @@
             <artifactId>xmlrpc</artifactId>
             <version>1.1.1</version>
         </dependency>
-        <dependency>
-            <groupId>commons-configuration</groupId>
-            <artifactId>commons-configuration</artifactId>
-            <version>1.8</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-cli</groupId>
-            <artifactId>commons-cli</artifactId>
-            <version>1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-            <version>3.2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
-        </dependency>
-        <dependency>
+         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.12</version>
@@ -311,17 +217,6 @@
             <version>1.7.12</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>2.8.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.16</version>
-        </dependency>
     </dependencies>
     <inceptionYear>2012</inceptionYear>
     <organization>
@@ -329,11 +224,11 @@
         <url>http://www.bican.net/</url>
     </organization>
     <scm>
-        <connection>scm:git@github.com:canbican/wordpress-java.git</connection>
-        <url>https://github.com/canbican/wordpress-java</url>
+        <connection>scm:git@github.com:snaphop/wordpress-java.git</connection>
+        <url>https://github.com/snaphop/wordpress-java</url>
     </scm>
     <issueManagement>
         <system>Github</system>
-        <url>https://github.com/canbican/wordpress-java/issues</url>
+        <url>https://github.com/snaphop/wordpress-java/issues</url>
     </issueManagement>
 </project>

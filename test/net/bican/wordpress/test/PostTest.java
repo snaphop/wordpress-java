@@ -232,11 +232,12 @@ public class PostTest extends AbstractWordpressTest {
     WP.deletePost(p);
   }
 
-  @SuppressWarnings("unused")
   @Test
   public void testSetCategory() throws Exception {
     final List<Term> terms = WP.getTerms("category");
-    final Term term = Term.builder().name("test category1").taxonomy("category").build();
+    final Term term = new Term();
+    term.setName("test category1");
+    term.setTaxonomy("category");
     Integer termId = null;
     try {
       termId = WP.newTerm(term);

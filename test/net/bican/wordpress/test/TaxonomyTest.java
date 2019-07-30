@@ -25,7 +25,9 @@ public class TaxonomyTest extends AbstractWordpressTest {
     Term term = WP.getTerm("category", 1);
     final String oldName = term.getName();
     term.setName("newnamedeneme");
-    final Term editTerm = Term.builder().taxonomy("category").name("newnamedeneme").build();
+    final Term editTerm = new Term();
+    editTerm.setTaxonomy("category");
+    editTerm.setName("newnamedeneme");
     assertTrue(WP.editTerm(term.getTerm_id(), editTerm));
     term = WP.getTerm("category", 1);
     assertEquals("newnamedeneme", term.getName());
@@ -97,7 +99,10 @@ public class TaxonomyTest extends AbstractWordpressTest {
 
   @Test
   public void testNewDeleteTerm() throws Exception {
-    final Term term = Term.builder().name("denemeterm").taxonomy("category").build();
+	final Term term = new Term();
+	term.setName("denemeterm");
+	term.setTaxonomy("category");
+    //final Term term = Term.builder().name("denemeterm").taxonomy("category").build();
     final Integer termId = WP.newTerm(term);
     assertNotNull(termId);
     assertTrue(termId.intValue() > 0);
